@@ -1,0 +1,41 @@
+<div>
+    <form method="post">
+        <div>
+            <input type="text" name="prompt" id="prompt" placeholder="shoe, burger, etc" />
+        </div>
+        <br>
+        <div>
+            <input type="button" class="submit-form" value="Generate Image" />
+        </div>
+    </form>
+    <div>
+        <img src="" class="ai-image" />
+    </div>
+</div>
+
+<script type="text/javascript">
+    require(["jquery"], function ($) {
+        $(document).ready(function () {
+            var customurl = "<?php echo $this->getUrl() . 'aigenerateimage/index/post' ?>";
+            $(".submit-form").click(function () {
+                var prompt = $("#prompt").val();
+                $.ajax({
+                    url: customurl,
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        prompt: prompt
+                    },
+                    complete: function (response) {
+                        //alert(response);
+                        var aiImage = response.responseJSON.data;
+                        $(".ai-image").attr("src", aiImage);
+                    },
+                    error: function (xhr, status, errorThrown) {
+                        console.log('Error happens. Try again.');
+                    }
+                });
+            });
+        });
+    });
+</script>
